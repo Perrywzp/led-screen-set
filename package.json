@@ -1,6 +1,6 @@
 {
   "name": "led-screen-set",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./dist/led-screen-set.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
