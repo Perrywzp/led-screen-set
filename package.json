@@ -1,5 +1,5 @@
 {
-  "name": "webpack-simple",
+  "name": "led-screen-set",
   "version": "0.1.0",
   "main": "./dist/led-screen-set.common.js",
   "scripts": {
