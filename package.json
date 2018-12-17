@@ -1,6 +1,6 @@
 {
   "name": "led-screen-set",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./dist/led-screen-set.common.js",
   "author": "wangzhipei",
   "scripts": {
@@ -9,7 +9,6 @@
     "build-bundle": "vue-cli-service build --target lib --name led-screen-set ./src/libs/ledSet/index.js",
     "lint": "vue-cli-service lint"
   },
-  "publishConfig":{"registry":"http://af.hikvision.com.cn/artifactory/api/npm/npm-publicsecurity/"},
   "dependencies": {
     "element-ui": "^2.4.11",
     "led-screen-set": "^0.1.1",
