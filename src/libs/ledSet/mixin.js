@@ -1,10 +1,11 @@
 export default {
   computed: {
     flatKeywords () {
+      let {childrens} = this
       let flatKeywords = []
       this.keywords.forEach(item => {
-        if (item.childrens && item.childrens.length) {
-          flatKeywords = flatKeywords.concat(item.childrens)
+        if (item[childrens] && item[childrens].length) {
+          flatKeywords = flatKeywords.concat(item[childrens])
         }
       })
       return flatKeywords

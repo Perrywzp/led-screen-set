@@ -1,47 +1,73 @@
 <template>
-  <led-set v-model="data"></led-set>
+  <led-set v-model="data" 
+    :selectKey="selectKey"
+    :selectName="selectName"
+    :childrens="childrens"
+    :keywords="keywords"
+  ></led-set>
 </template>
 <script>
-// import ledSet from '@/libs/ledSet/main'
+import ledSet from '@/libs/ledSet/main'
 export default {
   name: 'ledPage',
-  // ,components: { ledSet }
+  components: { ledSet },
   data () {
     return {
-        data: {
-          size: { width: 488, height: 448 },
-          areas: [{
-            x: 20,
-            y: 20,
-            width: 300,
-            height: 75,
-            text: '恭喜发财',
-            fontColor: '#c2484c',
-            fontSize: 16,
-            fontWeight: 'normal',
-            horAlign: 'left'
-          }, {
-            x: 20,
-            y: 120,
-            width: 350,
-            height: 75,
-            text: '红包拿来',
-            fontColor: '#e5de1d',
-            fontSize: 18,
-            fontWeight: 'normal',
-            horAlign: 'center'
-          }, {
-            x: 20,
-            y: 220,
-            width: 400,
-            height: 75,
-            text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
-            fontColor: '#1de51d',
-            fontSize: 20,
-            fontWeight: 'bold',
-            horAlign: 'right'
-          }]
+      selectKey: 'dictCode',
+      selectName: 'dictName',
+      childrens: 'childrenList',
+      keywords: [
+        {
+          dictName: '类型一',
+          dictCode: '11111',
+          childrenList: [
+            {dictName: '关键字1', dictCode: 'key1111'},
+            {dictName: '关键字2', dictCode: 'key2221'}
+          ]
+        },
+        {
+          dictName: '类型二',
+          dictCode: '11111',
+          childrenList: [
+            {dictName: '关键字3', dictCode: 'key3333'},
+            {dictName: '关键字4', dictCode: 'key4444'}
+          ]
         }
+      ],
+      data: {
+        size: { width: 488, height: 448 },
+        areas: [{
+          x: 20,
+          y: 20,
+          width: 300,
+          height: 75,
+          text: '恭喜发财',
+          fontColor: '#c2484c',
+          fontSize: 16,
+          fontWeight: 'normal',
+          horAlign: 'left'
+        }, {
+          x: 20,
+          y: 120,
+          width: 350,
+          height: 75,
+          text: '红包拿来',
+          fontColor: '#e5de1d',
+          fontSize: 18,
+          fontWeight: 'normal',
+          horAlign: 'center'
+        }, {
+          x: 20,
+          y: 220,
+          width: 400,
+          height: 75,
+          text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
+          fontColor: '#1de51d',
+          fontSize: 20,
+          fontWeight: 'bold',
+          horAlign: 'right'
+        }]
+      }
     }
   }
 }

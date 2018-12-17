@@ -87,6 +87,8 @@ export default {
 | keywords     | 给led模拟屏提供标签选项数据，即显示类型和显示内容数据, 是一个二维数组 | Array | — | — |
 | multipleLimit| 设置用户可以选择标签选项上限 | Number  |    —  |  100 |
 | placeholder  | 占位符标识     | Array |  —  | ['[', ']']|
-
+| selectKey    | 用于匹配提供的keywords数据唯一标识id字段 | String |  —  | 'dictCode' |
+| selectName   | 用于匹配提供的keywords数据展示name的字段 | String |  —  | 'dictName' |
+| selectKey    | 用于匹配提供的keywords数据获取childrens的字段 | String |  —  | 'childrenList' |
 ## Browser Support
 Modern browsers and Internet Explorer 10+.

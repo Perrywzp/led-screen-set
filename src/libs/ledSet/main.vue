@@ -17,9 +17,11 @@
         :placeholder="placeholder"></screen>
       </div>
       <params v-model="curRect" class="led-params" v-show="curIndex !== ''"
-        :keywords="keywords"
         :multipleLimit="multipleLimit"
-        :placeholder="placeholder">
+        :placeholder="placeholder"
+        :selectName="selectName"
+        :childrens="childrens"
+        :keywords="keywords">
       </params>
     </div>
   </div>
@@ -112,6 +114,18 @@ export default {
       default () {
         return ['[', ']'] //
       }
+    },
+    selectKey: {
+      type: String,
+      default: 'dictCode'
+    },
+    selectName: {
+      type: String,
+      default: 'dictName'
+    },
+    childrens: {
+      type: String,
+      default: 'childrenList'
     }
   },
   data () {

@@ -60,9 +60,9 @@
       <td align="center">显示类型</td>
       <td>
         <el-select v-model="displayTypeIndex">
-          <el-option  v-for="(item, index) in keywords" :value="index" :key="index" :label="item.name" @change="showKeywords">{{item.name}}</el-option>
+          <el-option  v-for="(item, index) in keywords" :value="index" :key="index" :label="item[selectName]" @change="showKeywords">{{item[selectName]}}</el-option>
         </el-select>
-        </td>
+      </td>
     </tr>
     <tr>
       <td align="center">显示内容</td>
@@ -84,9 +84,9 @@
               ></textarea>
           </el-tooltip>
           <el-dropdown-menu slot="dropdown" class="led-params-keywords">
-            <el-dropdown-item v-for="(item, index) in keywords[displayTypeIndex].childrens" :key="index" :command="item"
-            :disabled="disabledSelect || matchIds.includes(item.id) || matchIds.includes(item.id)">
-            {{item.name}}</el-dropdown-item>
+            <el-dropdown-item v-for="(item, index) in getSelects" :key="index" :command="item"
+            :disabled="disabledSelect || matchIds.includes(item && item[selectKey] || '') || matchIds.includes(item && item[selectKey] || '')">
+            {{item[selectName]}}</el-dropdown-item>
           </el-dropdown-menu>
          </el-dropdown>
       </td>
@@ -99,6 +99,18 @@ export default {
   name: 'led-params',
   mixins: [mixin],
   props: {
+    selectKey: {
+      type: String,
+      default: 'dictCode'
+    },
+    selectName: {
+      type: String,
+      default: 'dictName'
+    },
+    childrens: {
+      type: String,
+      default: 'childrenList'
+    },
     value: {
       type: Object,
       default () {
@@ -114,24 +126,7 @@ export default {
     keywords: {
       type: Array,
       default () {
-        return [
-          {
-            name: '类型一',
-            id: '11111',
-            childrens: [
-              {name: '关键字1', id: 'key1111'},
-              {name: '关键字2', id: 'key2221'}
-            ]
-          },
-          {
-            name: '类型二',
-            id: '11211',
-            childrens: [
-              {name: '关键字3', id: 'key3333'},
-              {name: '关键字4', id: 'key4444'}
-            ]
-          }
-        ]
+        return []
       }
     },
     // 占位符
@@ -183,26 +178,29 @@ export default {
     }
   },
   computed: {
+    getSelects () {
+      return this.keywords[this.displayTypeIndex] ? this.keywords[this.displayTypeIndex][this.childrens] : []
+    },
     parseValue: {
       set (val) {
-        let {placeholder, flatKeywords} = this
+        let {placeholder, flatKeywords, selectName, selectKey} = this
         let [startFlag, endFlag] = placeholder
         let text = val || ''
         let matchs = this.selectKeywords = this.getMatchs(text)
         matchs.forEach(match => {
           const reg = new RegExp(`\\${startFlag}${match}\\${endFlag}`, 'g')
-          let id = this.getValue(match, flatKeywords, 'name', 'id')
+          let id = this.getValue(match, flatKeywords, selectName, selectKey)
           text = text.replace(reg, `${startFlag}${id}${endFlag}`)
         })
         this.value.text = text
       },
       get () {
-        let {placeholder, flatKeywords} = this
+        let {placeholder, flatKeywords, selectName, selectKey} = this
         let [startFlag, endFlag] = placeholder
         let text = this.value.text || ''
         this.getMatchs(text).forEach(match => {
           let reg = new RegExp(`\\${startFlag}${match}\\${endFlag}`, 'g')
-          let name = this.getValue(match, flatKeywords, 'id', 'name')
+          let name = this.getValue(match, flatKeywords, selectKey, selectName)
           text = text.replace(reg, `${startFlag}${name}${endFlag}`)
         })
         return text
@@ -324,16 +322,16 @@ export default {
      * 响应点击事件
      */
     hdKeywordClick (item) {
-      this.insertAtCursor(this.$refs.textarea, item.name)
+      this.insertAtCursor(this.$refs.textarea, item[this.selectName])
     },
 
     /**
      * 删除一组占位符
      */
     removePlaceholder (content, start) {
-      let {getValue, flatKeywords, placeholder, setCursorPosition} = this
+      let {getValue, flatKeywords, placeholder, setCursorPosition, selectName, selectKey} = this
       let [startFlag, endFlag] = placeholder
-      let id = getValue(content, flatKeywords, 'name', 'id')
+      let id = getValue(content, flatKeywords, selectName, selectKey)
       let reg = new RegExp(`\\${startFlag}${id}\\${endFlag}`, 'g')
       this.value.text = this.value.text.replace(reg, '')
       this.$nextTick(() => {

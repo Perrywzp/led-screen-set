@@ -77,7 +77,19 @@ export default {
     curIndex: {
       type: Number,
       default: -1
-    }
+    },
+     selectKey: {
+      type: String,
+      default: 'dictCode'
+    },
+    selectName: {
+      type: String,
+      default: 'dictName'
+    },
+    childrens: {
+      type: String,
+      default: 'childrenList'
+    },
   },
   data () {
     return {
@@ -110,11 +122,11 @@ export default {
   },
   methods: {
     transiferToName (text) {
-      let {placeholder, flatKeywords} = this
+      let {placeholder, flatKeywords, selectName, selectKey} = this
       let [startFlag, endFlag] = placeholder
       this.getMatchs(text || '').forEach(match => {
         let reg = new RegExp(`\\${startFlag}${match}\\${endFlag}`, 'g')
-        let name = this.getValue(match, flatKeywords, 'id', 'name')
+        let name = this.getValue(match, flatKeywords, selectKey, selectName)
         text = text.replace(reg, `${startFlag}${name}${endFlag}`)
       })
       return text
