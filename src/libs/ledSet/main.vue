@@ -8,7 +8,7 @@
  */
 <template>
   <div class='led-set' >
-    <toolbar :size="value.size" @save="hdSave" @del="hdDel" :canDel="curIndex !== ''"></toolbar>
+    <toolbar :size="value.size" @save="hdSave" @del="hdDel" :canDel="curIndex >= 0"></toolbar>
     <div class="led-box">
       <div class="screen-layout" :style="{width: layout.width + 'px', height: layout.height + 'px'}">
         <screen v-model="value.areas" @selected="selected" :size="simulateScreenSize"
@@ -16,7 +16,7 @@
         :curIndex="curIndex"
         :placeholder="placeholder"></screen>
       </div>
-      <params v-model="curRect" class="led-params" v-show="curIndex !== ''"
+      <params v-model="curRect" class="led-params" v-show="curIndex >= 0"
         :multipleLimit="multipleLimit"
         :placeholder="placeholder"
         :selectName="selectName"
@@ -131,7 +131,7 @@ export default {
   data () {
     return {
       curRect: {},
-      curIndex: 0,
+      curIndex: -1,
       simulateScreenSize: {
         width: 0,
         height: 0
@@ -159,7 +159,7 @@ export default {
   methods: {
     bindKeyDelete () {
       document.onkeydown = e => {
-        if (e.keyCode === 46 && this.curIndex !== '') {
+        if (e.keyCode === 46 && this.curIndex >=0 ) {
           this.hdDel()
         }
       }
@@ -173,18 +173,18 @@ export default {
       this.simulateScreenSize = this.clacSimulateScreenSize()
       // 置空数据
       this.value.areas.splice(0, this.value.areas.length)
-      this.curIndex = ''
+      this.curIndex = -1
       this.$emit('input', this.value)
     },
     hdDel () {
-      if (this.curIndex === '') return
+      if (this.curIndex < 0) return
       this.$confirm('此操作将永久删除该区域数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'question'
       }).then(() => {
         this.value.areas.splice(this.curIndex, 1)
-        this.curIndex = ''
+        this.curIndex = -1
         this.$message({
           type: 'success',
           message: '删除成功!'

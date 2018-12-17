@@ -72,10 +72,10 @@ export default {
       width: 300,
       height: 75,
       text: '恭喜发财',
-      fontColor: '#c2484c',
-      fontSize: 16,
-      fontWeight: 'normal',
-      horAlign: 'left'
+      fontColor: '#ff0000', // 文字颜色
+      fontSize: 16,  // 字体大小
+      fontWeight: 'normal',  // normal普通， bold加粗
+      horAlign: 1  // 0 左， 1， 中， 2右
     }]
   }
 ```

@@ -42,30 +42,30 @@ export default {
           width: 300,
           height: 75,
           text: '恭喜发财',
-          fontColor: '#c2484c',
+          fontColor: '#ff0000',
           fontSize: 16,
           fontWeight: 'normal',
-          horAlign: 'left'
+          horAlign: 1
         }, {
           x: 20,
           y: 120,
           width: 350,
           height: 75,
           text: '红包拿来',
-          fontColor: '#e5de1d',
+          fontColor: '#ffff00',
           fontSize: 18,
           fontWeight: 'normal',
-          horAlign: 'center'
+          horAlign: 0
         }, {
           x: 20,
           y: 220,
           width: 400,
           height: 75,
           text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
-          fontColor: '#1de51d',
+          fontColor: '#00ff00',
           fontSize: 20,
           fontWeight: 'bold',
-          horAlign: 'right'
+          horAlign: 2
         }]
       }
     }

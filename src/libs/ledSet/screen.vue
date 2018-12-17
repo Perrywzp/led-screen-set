@@ -78,7 +78,7 @@ export default {
       type: Number,
       default: -1
     },
-     selectKey: {
+    selectKey: {
       type: String,
       default: 'dictCode'
     },
@@ -94,7 +94,7 @@ export default {
   data () {
     return {
       ctx: {},
-      activeRectIndex: '',
+      activeRectIndex: -1,
       crossedRectIndexs: [],
       isDrawing: false,
       isDraging: false, // 判定是否在拖拽中
@@ -221,7 +221,7 @@ export default {
       // 取得当前画布上被单击的点
       let curX = e.pageX - canvas.offsetLeft
       let curY = e.pageY - canvas.offsetTop
-      this.activeRectIndex = ''
+      this.activeRectIndex = -1
       // 判定是点在了已有矩形框
       // 若是， 该矩形框需高亮
       for (let i = 0; i < this.value.length; i++) {
@@ -235,7 +235,7 @@ export default {
         }
       }
       // 如果是在有矩形框上进行绘制，则return，不支持绘制
-      if (this.activeRectIndex !== '') {
+      if (this.activeRectIndex >= 0) {
         // 若不是绘制, 则需清除之前存储过的起始点数据
         this.isDrawing = false
         // 在拖拽中
@@ -308,7 +308,7 @@ export default {
       this.drawingRect = ''
       this.drawingStart = ''
       this.crossedRectIndexs = []
-      this.activeRectIndex === '' && this.$emit('selected', {index: '', rect: {}})
+      this.activeRectIndex < 0 && this.$emit('selected', {index: -1, rect: {}})
       this.render()
     },
     mouseup () {
@@ -341,7 +341,7 @@ export default {
         this.$emit('selected', {index: this.activeRectIndex, rect})
         this.$emit('input', this.value)
       } else {
-        this.activeRectIndex === '' && this.$emit('selected', {index: '', rect: {}})
+        this.activeRectIndex < 0 && this.$emit('selected', {index: -1, rect: {}})
       }
     },
     // 判定两个矩形是否交叉
