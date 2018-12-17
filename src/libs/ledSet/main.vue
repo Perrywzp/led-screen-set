@@ -14,12 +14,12 @@
         <screen v-model="value.areas" @selected="selected" :size="simulateScreenSize"
         :keywords="keywords"
         :curIndex="curIndex"
-        :placeholder="options.placeholder"></screen>
+        :placeholder="placeholder"></screen>
       </div>
       <params v-model="curRect" class="led-params" v-show="curIndex !== ''"
         :keywords="keywords"
-        :multipleLimit="options.multipleLimit"
-        :placeholder="options.placeholder">
+        :multipleLimit="multipleLimit"
+        :placeholder="placeholder">
       </params>
     </div>
   </div>
@@ -103,13 +103,14 @@ export default {
         ]
       }
     },
-    options: {
-      type: Object,
+    multipleLimit: {
+      type: Number,
+      default: 100
+    },
+    placeholder: {
+      type: Array,
       default () {
-        return {
-          multipleLimit: 8, // 标签选择上限
-          placeholder: ['[', ']'] //
-        }
+        return ['[', ']'] //
       }
     }
   },
