@@ -31,6 +31,15 @@ export default {
   name: 'led-screen',
   mixins: [mixin],
   props: {
+    layout: {
+      type: Object,
+      default () {
+         return {
+          width: 420,
+          height: 420
+        }
+      }
+    },
     size: {
       type: Object,
       default () {
@@ -114,6 +123,28 @@ export default {
       this.render()
     }
   },
+  computed: {
+    canvasRects: {
+      set (val) {
+        let {width: layoutWidth, height: layoutHeight} = this.layout
+        let {width: canvasWidth, height: canvasHeight} = this.size
+        // 这里是实际屏幕上的区域尺寸
+        let areas = val.map(item => {
+          return Object.assign( {}, item, {width: item.width * (layoutWidth / canvasWidth), height: item.height * (layoutHeight / canvasHeight)} )
+        })
+        this.$emit('getScreenAreas', areas)
+        this.$emit('selected',{index: areas.length - 1, rect: areas[areas.length - 1]})
+      },
+      get () {
+        let {width: layoutWidth, height: layoutHeight} = this.layout
+        let {width: canvasWidth, height: canvasHeight} = this.size
+        // 返回给canvas上展示用的尺寸
+        return this.value.map(item => {
+           return Object.assign( {}, item, {width: item.width * (canvasWidth / layoutWidth), height: item.height * (canvasHeight / layoutHeight)} )
+        })
+      }
+    }
+  },
   mounted () {
     this.$nextTick(() => {
       this.inited()
@@ -152,7 +183,7 @@ export default {
     },
     render () {
       this.ctx.clearRect(0, 0, this.size.width, this.size.height)
-      this.value.forEach((rect, index) => {
+      this.canvasRects.forEach((rect, index) => {
         this.drawRect(rect, index)
         this.drawText(rect)
       })
@@ -219,13 +250,14 @@ export default {
     mousedown (e) {
       let canvas = this.$refs.canvas
       // 取得当前画布上被单击的点
-      let curX = e.pageX - canvas.offsetLeft
-      let curY = e.pageY - canvas.offsetTop
+      let {left, top} = canvas.getBoundingClientRect()
+      let curX = e.pageX - left
+      let curY = e.pageY - top
       this.activeRectIndex = -1
       // 判定是点在了已有矩形框
       // 若是， 该矩形框需高亮
-      for (let i = 0; i < this.value.length; i++) {
-        let {x, y, width, height} = this.value[i]
+      for (let i = 0; i < this.canvasRects.length; i++) {
+        let {x, y, width, height} = this.canvasRects[i]
         // 判定点是否在矩形框区域内
         if (curX >= x && curX <= x + width && curY >= y && curY <= y + height) {
           this.activeRectIndex = i
@@ -262,8 +294,9 @@ export default {
       // 取得当前画布上划过的点
       let startX = this.drawingStart && this.drawingStart.x
       let startY = this.drawingStart && this.drawingStart.y
-      let curX = e.pageX - canvas.offsetLeft
-      let curY = e.pageY - canvas.offsetTop
+      let {left, top} = canvas.getBoundingClientRect()
+      let curX = e.pageX - left
+      let curY = e.pageY - top
       let diffX = curX - startX
       let diffY = curY - startY
       let x
@@ -294,8 +327,8 @@ export default {
       this.drawingRect = {x, y, width, height}
       // 起始点是不会出现在有矩形框内的， 所以只需判定另三个点即可, 被否决， 出现了交叉情况便有问题了
       this.crossedRectIndexs = []
-      for (let i = 0; i < this.value.length; i++) {
-        if (this.boolRectCross(this.drawingRect, this.value[i])) {
+      for (let i = 0; i < this.canvasRects.length; i++) {
+        if (this.boolRectCross(this.drawingRect, this.canvasRects[i])) {
           this.crossedRectIndexs.push(i)
           status = 'forbiden'
         }
@@ -304,6 +337,7 @@ export default {
       this.drawRect(this.drawingRect, '', status)
     },
     mouseout () {
+      // if (!this.isDrawing) return
       this.isDrawing = false
       this.drawingRect = ''
       this.drawingStart = ''
@@ -324,6 +358,7 @@ export default {
       }
       if (this.drawingRect) {
         let {width, height} = this.drawingRect
+        let canvasRects = this.canvasRects
         // 如果绘制区域面积太小， 则自动放弃
         if (width * height < this.options.limitRectArea) {
           this.drawingStart = ''
@@ -333,13 +368,16 @@ export default {
           return
         }
         // 新增的矩形就选中
-        this.activeRectIndex = this.value.length
-        let rect = Object.assign({}, defaultRectParams, this.drawingRect)
-        this.value.push(rect)
+         
+        let showType = ''
+        if (this.keywords.length) {
+          showType = this.keywords[0][this.selectKey]
+        }
+        let rect = Object.assign({}, defaultRectParams, { showType }, this.drawingRect)
+        this.activeRectIndex = canvasRects.push(rect)
+        this.canvasRects = canvasRects
         this.drawingStart = ''
         this.drawingRect = ''
-        this.$emit('selected', {index: this.activeRectIndex, rect})
-        this.$emit('input', this.value)
       } else {
         this.activeRectIndex < 0 && this.$emit('selected', {index: -1, rect: {}})
       }

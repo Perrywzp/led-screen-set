@@ -27,7 +27,7 @@ export default {
         },
         {
           dictName: '类型二',
-          dictCode: '11111',
+          dictCode: '22222',
           childrenList: [
             {dictName: '关键字3', dictCode: 'key3333'},
             {dictName: '关键字4', dictCode: 'key4444'}
@@ -35,37 +35,40 @@ export default {
         }
       ],
       data: {
-        size: { width: 488, height: 448 },
+        size: { width: 4888, height: 2882 },
         areas: [{
           x: 20,
           y: 20,
-          width: 300,
-          height: 75,
+          width: 3000,
+          height: 755,
           text: '恭喜发财',
           fontColor: '#ff0000',
           fontSize: 16,
           fontWeight: 'normal',
-          horAlign: 1
+          horAlign: 1,
+          showType: '11111'
         }, {
           x: 20,
-          y: 120,
-          width: 350,
-          height: 75,
+          y: 100,
+          width: 3500,
+          height: 755,
           text: '红包拿来',
           fontColor: '#ffff00',
           fontSize: 18,
           fontWeight: 'normal',
-          horAlign: 0
+          horAlign: 0,
+          showType: '11111'
         }, {
           x: 20,
-          y: 220,
-          width: 400,
-          height: 75,
+          y: 175,
+          width: 4000,
+          height: 785,
           text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
           fontColor: '#00ff00',
           fontSize: 20,
           fontWeight: 'bold',
-          horAlign: 2
+          horAlign: 2,
+          showType: '22222'
         }]
       }
     }

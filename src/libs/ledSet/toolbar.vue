@@ -9,28 +9,28 @@
 
 <template>
   <div class="led-toolbar">
-    <span v-popover:popover><i :class="options.iconsClass.set"></i>配置屏幕尺寸</span>
-    <span @click="canDel && del()" :class="{'disabled': !canDel}" ><i :class="options.iconsClass.del"></i>删除</span>
-    <em>{{layoutDesc}}</em>
     <el-popover
-      ref="popover"
-      placement="bottom"
+      placement="bottom-start"
       width="300"
       v-model="setFormVisible"
       trigger="click">
-      <el-form ref="form" :model="formVal" :rules="rules" label-width="52px" style="width: 260px;margin: 0 auto;">
+      <el-form ref="ruleForm" :model="formVal" :rules="rules" label-width="52px" style="width: 260px;margin: 0 auto;">
         <el-form-item label="屏宽" prop="width">
-          <el-input v-model.number="formVal.width" name="width"><template slot="append">像素</template></el-input>
+          <el-input type="age" v-model.number="formVal.width" name="width"><template slot="append">像素</template></el-input>
         </el-form-item>
         <el-form-item label="屏高" prop="height">
-          <el-input v-model.number="formVal.height" name="height"><template slot="append">像素</template></el-input>
+          <el-input type="age" v-model.number="formVal.height" name="height"><template slot="append">像素</template></el-input>
         </el-form-item>
       </el-form>
       <div style="float: right;">
         <el-button type="primary"  @click="confirm">确定</el-button>
         <el-button @click="setFormVisible = false">取消</el-button>
       </div>
-  </el-popover>
+      <span slot="reference" ><i :class="options.iconsClass.set"></i>配置屏幕尺寸</span>
+    </el-popover>
+    <span @click="canDel && del()" :class="{'disabled': !canDel}" ><i :class="options.iconsClass.del"></i>删除</span>
+    <em>{{layoutDesc}}</em>
+
   </div>
 </template>
 <script>
@@ -63,20 +63,25 @@ export default {
     }
   },
   data () {
+    let that = this
     let validWidth = (rule, value, callback) => {
       valid(callback)
     }
     let validHeight = (rule, value, callback) => {
-      this.$refs.form.validateField('width')
+      that.$refs.ruleForm.validateField('width')
       valid(callback)
     }
     let valid = (callback) => {
       let {width, height} = this.formVal
-      let rate = width / height
-      if (rate >= 1 / 10 && rate <= 10) {
-        callback()
+      if ( width <= 0 || height <= 0) {
+        callback(new Error('屏宽高需为正整数'))
       } else {
-        callback(new Error('屏宽高比应既要<=10且要>=0.1'))
+        let rate = width / height
+        if (rate >= 1 / 10 && rate <= 10) {
+          callback()
+        } else {
+          callback(new Error('屏宽高比应既要<=10且要>=0.1'))
+        }
       }
     }
     return {
@@ -87,14 +92,14 @@ export default {
         height: this.size.height
       },
       rules: {
-        width: [{required: true, message: '请输入屏宽', trigger: 'blur'}, {type: 'number', message: '屏宽必须为数字值'}, { validator: validWidth, trigger: 'blur' }],
-        height: [{required: true, message: '请输入屏高', trigger: 'blur'}, {type: 'number', message: '屏高必须为数字值'}, { validator: validHeight, trigger: 'blur' }]
+        width: [{type: 'number', message: '屏宽必须为数字值'}, {required: true, type: 'number', message: '请输入屏宽', trigger: 'blur'}, { validator: validWidth, trigger: 'blur' }],
+        height: [{type: 'number', message: '屏高必须为数字值'}, {required: true, type: 'number', message: '请输入屏高', trigger: 'blur'}, { validator: validHeight, trigger: 'blur' }]
       }
     }
   },
   methods: {
     confirm () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           let {width, height} = this.formVal
           this.$emit('save', this.formVal)

@@ -10,18 +10,27 @@
   <div class='led-set' >
     <toolbar :size="value.size" @save="hdSave" @del="hdDel" :canDel="curIndex >= 0"></toolbar>
     <div class="led-box">
-      <div class="screen-layout" :style="{width: layout.width + 'px', height: layout.height + 'px'}">
-        <screen v-model="value.areas" @selected="selected" :size="simulateScreenSize"
+      <div class="screen-layout" :style="{width: layout.width + 'px', height: layout.height + 'px', lineHeight: layout.height + 'px'}">
+        <span v-if="showTip">请在该区域中配置屏幕尺寸</span>
+        <screen v-model="value.areas" @selected="selected" :size="simulateScreenSize" class="led-screen"
+        :layout="value.size"
         :keywords="keywords"
         :curIndex="curIndex"
-        :placeholder="placeholder"></screen>
+        :selectName="selectName"
+        :childrens="childrens"
+        :selectKey="selectKey"
+        :placeholder="placeholder"
+        @getScreenAreas="updateScreenAreas"></screen>
       </div>
       <params v-model="curRect" class="led-params" v-show="curIndex >= 0"
         :multipleLimit="multipleLimit"
         :placeholder="placeholder"
         :selectName="selectName"
         :childrens="childrens"
-        :keywords="keywords">
+        :selectKey="selectKey"
+        :keywords="keywords"
+        :newFlag="newFlag"
+        @changeNewFlag="hdNewFlag">
       </params>
     </div>
   </div>
@@ -47,38 +56,8 @@ export default {
       type: Object,
       default () {
         return {
-          size: {width: 448, height: 288},
-          areas: [{
-            x: 20,
-            y: 20,
-            width: 300,
-            height: 75,
-            text: '恭喜发财',
-            fontColor: '#c2484c',
-            fontSize: 16,
-            fontWeight: 'normal',
-            horAlign: 'left'
-          }, {
-            x: 20,
-            y: 120,
-            width: 350,
-            height: 75,
-            text: '红包拿来',
-            fontColor: '#e5de1d',
-            fontSize: 18,
-            fontWeight: 'normal',
-            horAlign: 'center'
-          }, {
-            x: 20,
-            y: 220,
-            width: 400,
-            height: 75,
-            text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
-            fontColor: '#1de51d',
-            fontSize: 20,
-            fontWeight: 'bold',
-            horAlign: 'right'
-          }]
+          size: {width: 0, height: 0},
+          areas: []
         }
       }
     },
@@ -135,7 +114,9 @@ export default {
       simulateScreenSize: {
         width: 0,
         height: 0
-      }
+      },
+      showTip: false,
+      newFlag: false
     }
   },
   mounted () {
@@ -155,8 +136,14 @@ export default {
       this.value.areas[this.curIndex] = this.curRect
     }
   },
-
   methods: {
+    updateScreenAreas (areas) {
+      this.value.areas = areas
+      this.$emit('input', this.value)
+    },
+    hdNewFlag () {
+      this.newFlag = false
+    },
     bindKeyDelete () {
       document.onkeydown = e => {
         if (e.keyCode === 46 && this.curIndex >=0 ) {
@@ -165,8 +152,15 @@ export default {
       }
     },
     selected ({index, rect}) {
+      // 此处的newFlag标识值作用是防止选择区域时因showType对应的select发生change导致显示内容被清空
+      if( index >= 0 && this.curIndex >= 0 && rect.showType === this.curRect.showType ) {
+        this.newFlag = false
+      } else {
+        this.newFlag = true
+      }
       this.curRect = rect
       this.curIndex = index
+
     },
     hdSave (data) {
       this.value.size = data
@@ -184,6 +178,7 @@ export default {
         type: 'question'
       }).then(() => {
         this.value.areas.splice(this.curIndex, 1)
+        this.$emit('input', this.value)
         this.curIndex = -1
         this.$message({
           type: 'success',
@@ -193,13 +188,21 @@ export default {
     },
     clacSimulateScreenSize () {
       let simulateScreenSize = {}
-      let { size } = this.value
-      if (Number(size.width) >= Number(size.height)) {
-        simulateScreenSize.width = this.layout.width
-        simulateScreenSize.height = (size.height / size.width) * simulateScreenSize.width
-      } else {
-        simulateScreenSize.height = this.layout.height
-        simulateScreenSize.width = (size.width / size.height) * simulateScreenSize.height
+      let { width, height } = this.value.size
+      width = Number(width)
+      height = Number(height)
+      if (width === 0 || height === 0) {
+        simulateScreenSize = {width: 0, height: 0}
+        this.showTip = true
+      }else{
+        if (width >= height) {
+          simulateScreenSize.width = this.layout.width
+          simulateScreenSize.height = (height / width) * simulateScreenSize.width
+        } else {
+          simulateScreenSize.height = this.layout.height
+          simulateScreenSize.width = (width / height) * simulateScreenSize.height
+        }
+        this.showTip = false
       }
       return simulateScreenSize
     }
@@ -213,10 +216,22 @@ export default {
 }
 .led-box {
   width: 100%;
-  .screen-layout{
+  .screen-layout {
     float: left;
     margin-right: 20px;
     background: #f5f5f5;
+    position: relative;
+    span {
+      font-size: 12px;
+      color: #666;
+    }
+    text-align: center;
+  }
+  .led-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10
   }
   .led-params {
     width: 54%;

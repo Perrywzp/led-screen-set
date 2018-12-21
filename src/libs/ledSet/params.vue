@@ -59,8 +59,8 @@
     <tr>
       <td align="center">显示类型</td>
       <td>
-        <el-select v-model="displayTypeIndex">
-          <el-option  v-for="(item, index) in keywords" :value="index" :key="index" :label="item[selectName]" @change="showKeywords">{{item[selectName]}}</el-option>
+        <el-select v-model="value.showType" @change="showKeywords">
+          <el-option  v-for="(item, index) in keywords" :value="item[selectKey]" :key="index" :label="item[selectName]">{{item[selectName]}}</el-option>
         </el-select>
       </td>
     </tr>
@@ -78,7 +78,6 @@
               :rows="2"
               placeholder="请输入内容"
               @keydown="hdKeyDown"
-              @click="showKeywords"
               @input="hdInput"
               :value="parseValue"
               ></textarea>
@@ -140,8 +139,17 @@ export default {
     multipleLimit: {
       type: Number,
       default: 8
+    },
+    newFlag: {
+      type: Boolean,
+      default: false
     }
   },
+  mounted () {
+    if (this.value && this.keywords.length && !this.value.showType){
+      this.value.showType = this.keywords[0][this.selectKey]
+    }
+   },
   data () {
     return {
       displayTypeIndex: 0,
@@ -174,12 +182,15 @@ export default {
           {name: '否', value: 'normal'}
         ]
       },
-      selectKeywords: [] // 对textarea正在匹配提取出来的值，这里提取的name
+      selectKeywords: [], // 对textarea正在匹配提取出来的值，这里提取的name
+
     }
   },
   computed: {
     getSelects () {
-      return this.keywords[this.displayTypeIndex] ? this.keywords[this.displayTypeIndex][this.childrens] : []
+      let {keywords, selectKey, value, childrens} = this
+      let selectTypeItem = keywords.find(item => { return item[selectKey] === value.showType })
+      return selectTypeItem ? selectTypeItem[childrens] : []
     },
     parseValue: {
       set (val) {
@@ -224,7 +235,11 @@ export default {
   },
   methods: {
     showKeywords () {
-      // this.$refs.dropdown.visible = true
+      if(this.newFlag) {
+        this.$emit('changeNewFlag')
+        return
+      }
+      this.parseValue = ''
     },
     /**
      * 查找当前光标在占位符的什么位置，前/中/后
@@ -409,14 +424,20 @@ export default {
         li {
           cursor: pointer;
           float: left;
+          box-sizing: border-box;
           width: 75px;
           height: 25px;
           line-height: 25px;
           text-align: center;
           border: 1px solid #ccc;
           margin-right: -1px;
+          &.active {
+            border:none;
+          }
           &.active span{
             margin-top: -1px;
+            margin-right: 0;
+            width: 74px;
             border: 1px solid #1E7FFF;
             color: #1E7FFF;
           }
