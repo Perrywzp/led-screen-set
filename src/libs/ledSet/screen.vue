@@ -337,7 +337,7 @@ export default {
       this.drawRect(this.drawingRect, '', status)
     },
     mouseout () {
-      // if (!this.isDrawing) return
+      if (!this.isDrawing) return
       this.isDrawing = false
       this.drawingRect = ''
       this.drawingStart = ''
