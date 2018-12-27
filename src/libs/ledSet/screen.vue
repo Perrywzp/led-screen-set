@@ -130,7 +130,12 @@ export default {
         let {width: canvasWidth, height: canvasHeight} = this.size
         // 这里是实际屏幕上的区域尺寸
         let areas = val.map(item => {
-          return Object.assign( {}, item, {width: item.width * (layoutWidth / canvasWidth), height: item.height * (layoutHeight / canvasHeight)} )
+          return Object.assign( {}, item, {
+              width: item.width * (layoutWidth / canvasWidth), 
+              height: item.height * (layoutHeight / canvasHeight),
+              x: item.x * (layoutWidth / canvasWidth),
+              y: item.y * (layoutHeight / canvasHeight)
+            })
         })
         this.$emit('getScreenAreas', areas)
         this.$emit('selected',{index: areas.length - 1, rect: areas[areas.length - 1]})
@@ -140,7 +145,12 @@ export default {
         let {width: canvasWidth, height: canvasHeight} = this.size
         // 返回给canvas上展示用的尺寸
         return this.value.map(item => {
-           return Object.assign( {}, item, {width: item.width * (canvasWidth / layoutWidth), height: item.height * (canvasHeight / layoutHeight)} )
+           return Object.assign( {}, item, {
+             width: item.width * (canvasWidth / layoutWidth), 
+             height: item.height * (canvasHeight / layoutHeight),
+             x: item.x * (canvasWidth / layoutWidth),
+             y: item.y * (canvasHeight / layoutHeight)
+            })
         })
       }
     }

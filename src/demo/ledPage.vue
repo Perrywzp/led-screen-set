@@ -37,8 +37,8 @@ export default {
       data: {
         size: { width: 4888, height: 2882 },
         areas: [{
-          x: 20,
-          y: 20,
+          x: 300,
+          y: 100,
           width: 3000,
           height: 755,
           text: '恭喜发财',
@@ -48,8 +48,8 @@ export default {
           horAlign: 1,
           showType: '11111'
         }, {
-          x: 20,
-          y: 100,
+          x: 300,
+          y: 900,
           width: 3500,
           height: 755,
           text: '红包拿来',
@@ -59,8 +59,8 @@ export default {
           horAlign: 0,
           showType: '11111'
         }, {
-          x: 20,
-          y: 175,
+          x: 300,
+          y: 1750,
           width: 4000,
           height: 785,
           text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',

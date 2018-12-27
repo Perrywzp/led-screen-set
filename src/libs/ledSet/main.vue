@@ -128,12 +128,20 @@ export default {
       if (this.value.areas.length) {
         this.curRect = this.value.areas[0]
         this.curIndex = 0
+        this.newFlag = true
       }
     })
   },
   watch: {
     curRect () {
       this.value.areas[this.curIndex] = this.curRect
+    },
+    value () {
+      if (this.value.areas.length) {
+        this.curRect = this.value.areas[0]
+        this.curIndex = 0
+        this.newFlag = true
+      }
     }
   },
   methods: {
