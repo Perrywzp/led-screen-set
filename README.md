@@ -7,7 +7,7 @@ npm install led-screen-set -S
 ``` javascript
 import Vue from 'vue'
 import LedScreenSet from 'led-screen-set'
-import 'led-screen-set/led-screen-set.css'
+import 'led-screen-set/dist/led-screen-set.css'
 
 Vue.use(LedScreenSet)
 
