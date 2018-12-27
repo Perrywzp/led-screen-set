@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import hui from 'hui'
+import 'hui/lib/theme-default/index.css'
 // import LedScreenSet from 'led-screen-set'
 // import 'led-screen-set/dist/led-screen-set.css'
 
 Vue.config.productionTip = false
-Vue.use(ElementUI)
+Vue.use(hui)
 // Vue.use(LedScreenSet)
 
 new Vue({
