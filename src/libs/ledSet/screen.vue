@@ -136,10 +136,10 @@ export default {
         // 这里是实际屏幕上的区域尺寸
         let areas = val.map(item => {
           return Object.assign( {}, item, {
-              width: item.width * (layoutWidth / canvasWidth), 
-              height: item.height * (layoutHeight / canvasHeight),
-              x: item.x * (layoutWidth / canvasWidth),
-              y: item.y * (layoutHeight / canvasHeight)
+              width: Math.floor(item.width * (layoutWidth / canvasWidth)), 
+              height: Math.floor(item.height * (layoutHeight / canvasHeight)),
+              x: Math.floor(item.x * (layoutWidth / canvasWidth)),
+              y: Math.floor(item.y * (layoutHeight / canvasHeight))
             })
         })
         this.$emit('getScreenAreas', areas)

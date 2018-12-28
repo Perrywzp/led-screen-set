@@ -62,6 +62,11 @@ export default {
       default: false
     }
   },
+  watch: {
+    size () {
+      this.formVal = this.size
+    }
+  },
   data () {
     let that = this
     let validWidth = (rule, value, callback) => {

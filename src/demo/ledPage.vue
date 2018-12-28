@@ -35,7 +35,7 @@ export default {
         }
       ],
       data: {
-        size: { width: 4888, height: 2882 },
+        size: { width: 0, height: 0 },
         areas: [{
           x: 300,
           y: 100,
