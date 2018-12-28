@@ -54,7 +54,7 @@ export default {
           height: 755,
           text: '红包拿来',
           fontColor: '#ffff00',
-          fontSize: 18,
+          fontSize: 24,
           fontWeight: 'normal',
           horAlign: 0,
           showType: '11111'
@@ -65,7 +65,7 @@ export default {
           height: 785,
           text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
           fontColor: '#00ff00',
-          fontSize: 20,
+          fontSize: 36,
           fontWeight: 'bold',
           horAlign: 2,
           showType: '22222'
@@ -95,7 +95,7 @@ export default {
           height: 50,
           text: '红包拿来',
           fontColor: '#ffff00',
-          fontSize: 18,
+          fontSize: 24,
           fontWeight: 'normal',
           horAlign: 0,
           showType: '11111'
@@ -106,7 +106,7 @@ export default {
           height: 80,
           text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
           fontColor: '#00ff00',
-          fontSize: 20,
+          fontSize: 36,
           fontWeight: 'bold',
           horAlign: 2,
           showType: '22222'

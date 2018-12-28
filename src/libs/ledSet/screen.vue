@@ -194,9 +194,10 @@ export default {
     },
     inited () {
       let canvas = this.$refs.canvas
-      this.ctx = canvas.getContext('2d')
+      this.ctx = canvas.getContext && canvas.getContext('2d')
     },
     render () {
+      if(!this.ctx) return
       this.ctx.clearRect(0, 0, this.size.width, this.size.height)
       this.canvasRects.forEach((rect, index) => {
         this.drawRect(rect, index)

@@ -40,7 +40,7 @@ import toolbar from './toolbar'
 import screen from './screen'
 import params from './params'
 export default {
-  name: 'led-set',
+  name: 'led-screen-set',
   components: { toolbar, params, screen },
   props: {
     layout: {
