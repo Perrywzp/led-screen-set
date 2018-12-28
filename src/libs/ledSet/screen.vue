@@ -118,6 +118,11 @@ export default {
       },
       deep: true
     },
+    size() {
+      this.$nextTick(() => {
+        this.render()
+      })
+    },
     curIndex () {
       this.activeRectIndex = this.curIndex
       this.render()

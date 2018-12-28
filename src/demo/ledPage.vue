@@ -72,6 +72,47 @@ export default {
         }]
       }
     }
+  },
+  mounted() {
+    setTimeout(()=> {
+      this.data = {
+        size: { width: 500, height: 500 },
+        areas: [{
+          x: 10,
+          y: 10,
+          width: 280,
+          height: 40,
+          text: '恭喜发财',
+          fontColor: '#ff0000',
+          fontSize: 16,
+          fontWeight: 'normal',
+          horAlign: 1,
+          showType: '11111'
+        }, {
+          x: 10,
+          y: 90,
+          width: 350,
+          height: 50,
+          text: '红包拿来',
+          fontColor: '#ffff00',
+          fontSize: 18,
+          fontWeight: 'normal',
+          horAlign: 0,
+          showType: '11111'
+        }, {
+          x: 10,
+          y: 200,
+          width: 400,
+          height: 80,
+          text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
+          fontColor: '#00ff00',
+          fontSize: 20,
+          fontWeight: 'bold',
+          horAlign: 2,
+          showType: '22222'
+        }]
+      }
+    }, 5000)
   }
 }
 </script>

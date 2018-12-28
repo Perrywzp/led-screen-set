@@ -12,7 +12,7 @@
     <div class="led-box">
       <div class="screen-layout" :style="{width: layout.width + 'px', height: layout.height + 'px', lineHeight: layout.height + 'px'}">
         <span v-if="showTip">请在该区域中配置屏幕尺寸</span>
-        <screen v-model="value.areas" @selected="selected" :size="simulateScreenSize" class="led-screen"
+        <screen v-else v-model="value.areas" @selected="selected" :size="simulateScreenSize" class="led-screen"
         :layout="value.size"
         :keywords="keywords"
         :curIndex="curIndex"
@@ -137,10 +137,16 @@ export default {
       this.value.areas[this.curIndex] = this.curRect
     },
     value () {
-      if (this.value.areas.length) {
-        this.curRect = this.value.areas[0]
-        this.curIndex = 0
-        this.newFlag = true
+      this.showTip = false
+      if (this.value.size && this.value.size.width > 0 && this.value.size.height > 0) {
+        this.$nextTick(() => {
+          this.simulateScreenSize = this.clacSimulateScreenSize()
+          if (this.value.areas.length) {
+            this.curRect = this.value.areas[0]
+            this.curIndex = 0
+            this.newFlag = true
+          }
+        })
       }
     }
   },
