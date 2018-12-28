@@ -16,7 +16,7 @@ Vue.use(LedScreenSet)
 ## .vue文件使用标签
 ```
 <template>
-  <led-set></led-set>
+  <led-screen-set></led-screen-set>
 </template>
 <script>
 export default {
@@ -41,7 +41,7 @@ export default {
           height: 75,
           text: '红包拿来',
           fontColor: '#ffff00',
-          fontSize: 18,
+          fontSize: 24,
           fontWeight: 'normal',
           horAlign: 0
         }, {
@@ -51,7 +51,7 @@ export default {
           height: 75,
           text: '城阙辅三秦，风烟望五津, 与君离别意，同是宦游人; 海内存知己，天涯若比邻; 无为在歧路，儿女共沾巾',
           fontColor: '#00ff00',
-          fontSize: 20,
+          fontSize: 32,
           fontWeight: 'bold',
           horAlign: 2
         }]
