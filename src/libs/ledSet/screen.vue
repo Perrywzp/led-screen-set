@@ -194,7 +194,7 @@ export default {
     },
     inited () {
       let canvas = this.$refs.canvas
-      this.ctx = canvas.getContext && canvas.getContext('2d')
+      this.ctx = canvas && canvas.getContext('2d')
     },
     render () {
       if(!this.ctx) return
