@@ -105,6 +105,18 @@ export default {
     childrens: {
       type: String,
       default: 'childrenList'
+    },
+    sizeMinLimit: {
+      type: Array,
+      default () {
+        return [8, 8]
+      }
+    },
+    sizeMaxLimit: {
+      type: Array,
+      default () {
+        return [80000, 80000]
+      }
     }
   },
   data () {
@@ -203,8 +215,8 @@ export default {
     clacSimulateScreenSize () {
       let simulateScreenSize = {}
       let { width, height } = this.value.size
-      width = Number(width)
-      height = Number(height)
+      // width = Number(width)
+      // height = Number(height)
       if (width === 0 || height === 0) {
         simulateScreenSize = {width: 0, height: 0}
         this.showTip = true

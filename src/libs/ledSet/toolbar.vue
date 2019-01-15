@@ -16,10 +16,10 @@
       trigger="click">
       <el-form ref="ruleForm" :model="formVal" :rules="rules" label-width="52px" style="width: 260px;margin: 0 auto;">
         <el-form-item label="屏宽" prop="width">
-          <el-input type="age" v-model.number="formVal.width" name="width"><template slot="append">像素</template></el-input>
+          <el-input type="age" v-model="formVal.width" name="width"><template slot="append">像素</template></el-input>
         </el-form-item>
         <el-form-item label="屏高" prop="height">
-          <el-input type="age" v-model.number="formVal.height" name="height"><template slot="append">像素</template></el-input>
+          <el-input type="age" v-model="formVal.height" name="height"><template slot="append">像素</template></el-input>
         </el-form-item>
       </el-form>
       <div style="float: right;">
@@ -60,6 +60,18 @@ export default {
     canDel: {
       type: Boolean,
       default: false
+    },
+    sizeMinLimit: {
+      type: Array,
+      default () {
+        return [8, 8]
+      }
+    },
+    sizeMaxLimit: {
+      type: Array,
+      default () {
+        return [80000, 80000]
+      }
     }
   },
   watch: {
@@ -77,9 +89,13 @@ export default {
       valid(callback)
     }
     let valid = (callback) => {
+      let reg = /^(0|\+?[1-9][0-9]*)$/
       let {width, height} = this.formVal
-      if ( width <= 0 || height <= 0) {
+      let {sizeMinLimit, sizeMaxLimit} = this
+      if (!reg.test(width) || !reg.test(height)) {
         callback(new Error('屏宽高需为正整数'))
+      } else if (width < sizeMinLimit[0] || height < sizeMinLimit[1] || width > sizeMaxLimit[0] || height > sizeMaxLimit[1]) {
+        callback(new Error(`屏宽高不能小于${sizeMinLimit[0]}、${sizeMinLimit[1]},不能大于${sizeMaxLimit[0]}、${sizeMaxLimit[1]}`))
       } else {
         let rate = width / height
         if (rate >= 1 / 10 && rate <= 10) {
@@ -97,8 +113,14 @@ export default {
         height: this.size.height
       },
       rules: {
-        width: [{type: 'number', message: '屏宽必须为数字值'}, {required: true, type: 'number', message: '请输入屏宽', trigger: 'blur'}, { validator: validWidth, trigger: 'blur' }],
-        height: [{type: 'number', message: '屏高必须为数字值'}, {required: true, type: 'number', message: '请输入屏高', trigger: 'blur'}, { validator: validHeight, trigger: 'blur' }]
+        width: [
+          {required: true, message: '请输入屏宽', trigger: 'blur'},
+          { validator: validWidth, trigger: 'blur' }
+        ],
+        height: [
+          {required: true, message: '请输入屏高', trigger: 'blur'},
+          { validator: validHeight, trigger: 'blur' }
+        ]
       }
     }
   },
