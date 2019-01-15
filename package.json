@@ -1,6 +1,6 @@
 {
   "name": "led-screen-set",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "./dist/led-screen-set.common.js",
   "author": "wangzhipei",
   "scripts": {
