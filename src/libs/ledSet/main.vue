@@ -215,8 +215,8 @@ export default {
     clacSimulateScreenSize () {
       let simulateScreenSize = {}
       let { width, height } = this.value.size
-      // width = Number(width)
-      // height = Number(height)
+      width = Number(width)
+      height = Number(height)
       if (width === 0 || height === 0) {
         simulateScreenSize = {width: 0, height: 0}
         this.showTip = true
